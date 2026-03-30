@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/msj_bienvenidaregistro"
+            android:textAlignment="center"
+            android:fontFamily="@font/mulishregular"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/msj_llenarcampos"
+            android:textAlignment="center"
+            android:fontFamily="@font/mulishregular"
+            android:textSize="20sp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/user_name"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/pt_Name"
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:text="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/last_name"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/pt_LastName"
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:text="" />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cellphone"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/n_CellPhone"
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="phone" />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/password"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:ems="10"
+                android:inputType="textPassword" />
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="5dp">
+
+            <CheckBox
+                android:id="@+id/checkBoxPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/see_password"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="14sp"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_password"
+                android:fontFamily="@font/mulishregular"
+                android:textSize="14sp"/>
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:ems="10"
+                android:inputType="textPassword" />
+        </TableRow>
+        <Space
+            android:layout_height="10dp"
+            android:layout_width="match_parent"/>
+
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/CajaD"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/yellowti"
+                android:gravity="center|center_horizontal"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/registrandoD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/msj_registrando"
+                    android:textAlignment="center"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/plaguetoregisterD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/plaga_diabrotica"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/CajaTresFasesD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_huevecilloD"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTintMode="add"
+                    android:foregroundGravity="fill"
+                    android:orientation="vertical"
+                    android:background="@drawable/border_redgpa">
+
+                    <TextView
+                        android:id="@+id/tv_huevecilloD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mulishregular"
+                        android:text="@string/fase_huevecillo"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv1D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="@string/msj_cantidad"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/cantidad_hD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="0"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/ib_huevecillomenosD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_minus" />
+
+                        <Space
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content" />
+
+                        <ImageButton
+                            android:id="@+id/ib_huevecillomasD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_plus" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_chicoD"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/border_redgpa">
+
+                    <TextView
+                        android:id="@+id/tv_chicoD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mulishregular"
+                        android:text="@string/fase_chico"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv9D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+
+                            android:fontFamily="@font/mulishregular"
+                            android:text="@string/msj_cantidad"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/cantidad_chD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="0"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/ib_chicomenosD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_minus" />
+
+                        <Space
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content" />
+
+                        <ImageButton
+                            android:id="@+id/ib_chicomasD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_medianoD"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/border_redgpa">
+
+                    <TextView
+                        android:id="@+id/tv_medianoD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mulishregular"
+                        android:text="@string/fase_mediano"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv6D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+
+                            android:fontFamily="@font/mulishregular"
+                            android:text="@string/msj_cantidad"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/cantidad_mD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="0"
+                            android:textSize="20dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/ib_medianomenosD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_minus" />
+
+                        <Space
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content" />
+
+                        <ImageButton
+                            android:id="@+id/ib_medianomasD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/CajaDosFasesD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_grandeD"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/border_redgpa">
+
+                    <TextView
+                        android:id="@+id/tv_grandeD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mulishregular"
+                        android:text="@string/fase_grande"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv5D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+
+                            android:fontFamily="@font/mulishregular"
+                            android:text="@string/msj_cantidad"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/cantidad_gD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="0"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/ib_grandemenosD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_minus" />
+
+                        <Space
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content" />
+
+                        <ImageButton
+                            android:id="@+id/ib_grandemasD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pupaD"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/border_redgpa">
+
+                    <TextView
+                        android:id="@+id/tv_pupaD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/mulishregular"
+                        android:text="@string/fase_pupa"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv2D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="@string/msj_cantidad"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/cantidad_pD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/mulishregular"
+                            android:text="0"
+                            android:textSize="20dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/ib_pupamenosD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_minus" />
+
+                        <Space
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content" />
+
+                        <ImageButton
+                            android:id="@+id/ib_pupamasD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/arround"
+                            android:src="@drawable/ic_plus" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/gusanocogollero"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/GusanoCogollero"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/boton_gusanocogollero"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="Gusano Cogollero"
+                android:scaleType="centerInside"
+                android:src="@mipmap/gusanocogollero" />
+
+            <TextView
+                android:id="@+id/tvgusanocogollero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mulishregular"
+                android:text="@string/plaga_gusanocogollero"
+                android:textAlignment="center"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/registrogcog"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_graygpa"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mulishregular"
+                android:text="@string/plaga_gusanocogollero"
+                android:textSize="22dp" />
+
+            <LinearLayout
+                android:id="@+id/gcogregistroh"
+                tools:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/fase_huevecillo"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/msj_cantidad"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/tv_gcogh"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gcogregistrol"
+                tools:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/fase_larva"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/msj_cantidad"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/tv_gcogl"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gcogregistroa"
+                tools:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/fase_adulto"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:text="@string/msj_cantidad"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/tv_gcoga"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mulishregular"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

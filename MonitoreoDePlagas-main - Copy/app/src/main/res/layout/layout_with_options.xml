@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!-- bottom_sheet_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="40dp"
+    android:background="@android:color/holo_green_light"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <!-- Contenido de la LinearLayout que se mostrará dinámicamente -->
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/mulishregular"
+        android:text="@string/menu_inicio"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mulishregular"
+        android:text="@string/msj_login"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_Signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mulishregular"
+        android:text="@string/msj_signin"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_Monitoreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mulishregular"
+        android:text="@string/msj_vermonitoreo"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_Estadisticas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mulishregular"
+        android:text="@string/msj_verestadisticas"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_Logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mulishregular"
+        android:text="@string/msj_logout"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>
+
+

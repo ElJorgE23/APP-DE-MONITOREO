@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="greenti">#7ebe01</color>
+    <color name="greenstrongti">#00c356</color>
+    <color name="yellowti">#f7da00</color>
+    <color name="redstrongti">#83291a</color>
+    <color name="yellowstrongti">#fac501</color>
+    <color name="redti">#f24922</color>
+    <color name="yellowselection">#ffc800</color>
+    <color name="gray_gpa">#6f7073</color>
+    <color name="red_gpa">#eb3a23</color>
+    <color name="color_selection">#5B8FB8</color>
+    <color name="greenti_degraded">#bb7ebe01</color>
+</resources>
