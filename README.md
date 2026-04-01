@@ -61,8 +61,11 @@ Una vez abierto el proyecto y creado el dispositivo virtual, puedes ejecutar la 
 2. Esperar a que termine la sincronización de Gradle.
 
 ### Paso 2: Seleccionar el dispositivo
-1. En la parte superior de Android Studio, elegir el emulador creado.
-2. Verificar que esté encendido o iniciarlo desde **Device Manager** si es necesario.
+En la parte superior de Android Studio, haz clic en el ícono de configuración y selecciona SDK Manager.
+Se abrirá la ventana de Settings; entra a Languages & Frameworks > Android SDK.
+Marca Android API 36 y descárgalo.
+Después, abre Device Manager y verifica que el dispositivo esté encendido; si no, inícialo.
+   
 
 ### Paso 3: Ejecutar la app
 1. Dar clic en el botón **Run**.
