@@ -23,3 +23,4 @@ data class MonitoreoEntity(
     val fecha: String,
     val hora: String
 )
+

@@ -29,16 +29,20 @@ class pantalla_monitoreos : AppCompatActivity() {
     private lateinit var backMonitoreo: ImageButton
     private lateinit var recyclerMonitoreos: RecyclerView
     private lateinit var tvSinDatos: TextView
-    private lateinit var monitoreoAdapter: MonitoreoAdapter
+    private lateinit var monitoreoAdapter: MonitoreoAdapter// Adaptador que conecta los datos con el RecyclerView
     private lateinit var db: AppDatabase
     private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Obtiene la instancia de la base de datos usando el contexto de la app
         db = AppDatabase.getDatabase(applicationContext)
+
         sessionManager = SessionManager(this)
 
+        // Layout raíz de toda la pantalla
+        // Aquí estás creando la interfaz por código, no con XML
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.parseColor("#F5F5F5"))
@@ -48,6 +52,7 @@ class pantalla_monitoreos : AppCompatActivity() {
             )
         }
 
+        // Encabezado superior de la pantalla
         val header = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -59,14 +64,18 @@ class pantalla_monitoreos : AppCompatActivity() {
             )
         }
 
+        // Botón de regreso
         backMonitoreo = ImageButton(this).apply {
             layoutParams = LinearLayout.LayoutParams(dp(48), dp(48))
             setImageResource(R.drawable.ic_back)
             setBackgroundColor(Color.TRANSPARENT)
+
+            // Aplica el color del tema al fondo del boton
             backgroundTintList =
                 ContextCompat.getColorStateList(this@pantalla_monitoreos, R.color.greenti)
         }
 
+        // Título que aparece en el header
         val titulo = TextView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 0,
@@ -80,6 +89,7 @@ class pantalla_monitoreos : AppCompatActivity() {
             setTypeface(typeface, android.graphics.Typeface.BOLD)
         }
 
+        // Texto que se muestra si el usuario no tiene monitoreos guardados
         tvSinDatos = TextView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -91,9 +101,12 @@ class pantalla_monitoreos : AppCompatActivity() {
             gravity = Gravity.CENTER
             setTextColor(Color.parseColor("#666666"))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+
+            // Inicialmente está oculto; solo se mostrará si no hay datos
             visibility = View.GONE
         }
 
+        // RecyclerView que mostrará la lista de monitoreos
         recyclerMonitoreos = RecyclerView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -104,10 +117,12 @@ class pantalla_monitoreos : AppCompatActivity() {
             setPadding(dp(8), dp(8), dp(8), dp(8))
         }
 
+        // Se crea el adaptador y se define qué hacer cuando se toca un monitoreo
         monitoreoAdapter = MonitoreoAdapter { sesion ->
             abrirDetalleMonitoreo(sesion)
         }
 
+        // Se conecta el adaptador al RecyclerView
         recyclerMonitoreos.adapter = monitoreoAdapter
 
         header.addView(backMonitoreo)
@@ -119,54 +134,65 @@ class pantalla_monitoreos : AppCompatActivity() {
 
         setContentView(root)
 
+
         backMonitoreo.setOnClickListener {
             openActivity(MainActivity::class.java)
         }
-
         cargarMonitoreosDelUsuario()
     }
 
     private fun cargarMonitoreosDelUsuario() {
         lifecycleScope.launch {
+            // withContext se usa para ejecutar operaciones pesadas de base de datos
             val lista = withContext(Dispatchers.IO) {
                 val userId = sessionManager.obtenerUserId()
-                if (userId <= 0) return@withContext emptyList<MonitoreoEntity>()
 
+                // Si no hay usuario logueado, regresa lista vacía
+                if (userId <= 0) return@withContext emptyList<MonitoreoEntity>()
                 val usuario = db.userDao().obtenerUsuarioPorId(userId)
                     ?: return@withContext emptyList<MonitoreoEntity>()
-
                 val nombreCompleto = "${usuario.nombre} ${usuario.apellido}".trim()
                 db.monitoreoDao().obtenerPorUsuario(nombreCompleto)
             }
 
+            // Aquí agrupas y preparas los datos para mostrarlos en la UI
             val listaAgrupada = withContext(Dispatchers.Default) {
                 agruparMonitoreos(lista)
             }
 
+            // Si no hay datos, muestra el mensaje
             if (listaAgrupada.isEmpty()) {
                 tvSinDatos.visibility = View.VISIBLE
                 recyclerMonitoreos.visibility = View.GONE
             } else {
                 tvSinDatos.visibility = View.GONE
                 recyclerMonitoreos.visibility = View.VISIBLE
+
+                // Envía la lista al adaptador para que la pinte en pantalla
                 monitoreoAdapter.submitList(listaAgrupada)
             }
         }
     }
 
+    // Esta función toma todos los registros de monitoreo y los agrupa por sesionId
+    // para que cada sesión aparezca como un solo "Monitoreo 1", "Monitoreo 2", etc.
     private fun agruparMonitoreos(lista: List<MonitoreoEntity>): List<MonitoreoSesionUI> {
         val sesionesOrdenadas = lista
             .groupBy { it.sesionId }
             .map { (sesionId, registros) ->
                 SesionTemp(
                     sesionId = sesionId,
+
+                    // Se usa el ID menor para definir el orden en que apareció esa sesión
                     orden = registros.minOfOrNull { it.id } ?: 0,
                     registros = registros
                 )
             }
             .sortedBy { it.orden }
-
         return sesionesOrdenadas.mapIndexed { index, sesion ->
+
+            // Dentro de cada sesión ordena los registros por número de punto
+            // y si empatan, por ID
             val registrosOrdenados = sesion.registros.sortedWith(
                 compareBy<MonitoreoEntity> { extraerNumeroPunto(it.punto) }
                     .thenBy { it.id }
@@ -188,6 +214,7 @@ class pantalla_monitoreos : AppCompatActivity() {
                         latitud = reg.latitud.ifBlank { "-" },
                         longitud = reg.longitud.ifBlank { "-" },
                         afectacion = reg.nombre.ifBlank { reg.tipo.ifBlank { "-" } },
+
                         fase = reg.fase.ifBlank { "-" },
                         cantidad = reg.cantidad.ifBlank { "-" },
                         fecha = reg.fecha.ifBlank { "-" },
@@ -198,8 +225,11 @@ class pantalla_monitoreos : AppCompatActivity() {
         }
     }
 
+    // Esta función abre la pantalla de detalle/mapa del monitoreo seleccionado
     private fun abrirDetalleMonitoreo(item: MonitoreoSesionUI) {
         val intent = Intent(this, PantallaMapaMonitoreo::class.java)
+
+        // Manda datos generales del monitoreo por extras
         intent.putExtra("titulo", "Monitoreo ${item.numeroMonitoreo}")
         intent.putExtra("agricultor", item.agricultor)
         intent.putExtra("granja", item.granja)
@@ -207,17 +237,18 @@ class pantalla_monitoreos : AppCompatActivity() {
         intent.putExtra("fecha", item.fecha)
         intent.putExtra("cultivo", item.cultivo)
 
+        // Aquí conviertes cada registro a un String con separador
         val registros = ArrayList<String>()
         item.registros.forEach { reg ->
             registros.add(
                 "${reg.punto}|${reg.latitud}|${reg.longitud}|${reg.afectacion}|${reg.fase}|${reg.cantidad}|${reg.fecha}|${reg.hora}"
             )
         }
-
         intent.putStringArrayListExtra("registros_detalle", registros)
         startActivity(intent)
     }
 
+    // Esta función extrae el número de un texto como "Punto 1", "Punto 2", etc.
     private fun extraerNumeroPunto(punto: String): Int {
         return Regex("\\d+").find(punto)?.value?.toIntOrNull() ?: Int.MAX_VALUE
     }
@@ -228,6 +259,7 @@ class pantalla_monitoreos : AppCompatActivity() {
         finish()
     }
 
+    // Esto ayuda a que la interfaz se vea proporcional en distintos dispositivos
     private fun dp(valor: Int): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -236,12 +268,14 @@ class pantalla_monitoreos : AppCompatActivity() {
         ).toInt()
     }
 
+    // Clase temporal para agrupar registros por sesión
     data class SesionTemp(
         val sesionId: String,
         val orden: Int,
         val registros: List<MonitoreoEntity>
     )
 
+    // Modelo que ya está preparado para mostrarse en la interfaz
     data class MonitoreoSesionUI(
         val sesionId: String,
         val numeroMonitoreo: Int,
@@ -253,6 +287,7 @@ class pantalla_monitoreos : AppCompatActivity() {
         val registros: List<RegistroDetalleUI>
     )
 
+    // Modelo para el detalle de cada registro dentro de una sesión
     data class RegistroDetalleUI(
         val punto: String,
         val latitud: String,
@@ -264,13 +299,17 @@ class pantalla_monitoreos : AppCompatActivity() {
         val hora: String
     )
 
+    // Adaptador del RecyclerView
     class MonitoreoAdapter(
-        // se hace una vista de los datos
         private val onItemClick: (MonitoreoSesionUI) -> Unit
     ) : ListAdapter<MonitoreoSesionUI, MonitoreoAdapter.MonitoreoViewHolder>(DiffCallback) {
-        // compara la lista vieja con la nueva
+
+        // DiffUtil sirve para comparar la lista vieja con la nueva
+        // y actualizar solo los elementos necesarios del RecyclerView
         companion object {
             private val DiffCallback = object : DiffUtil.ItemCallback<MonitoreoSesionUI>() {
+
+                // Aquí comparas si dos elementos representan el mismo monitoreo
                 override fun areItemsTheSame(
                     oldItem: MonitoreoSesionUI,
                     newItem: MonitoreoSesionUI
@@ -278,6 +317,7 @@ class pantalla_monitoreos : AppCompatActivity() {
                     return oldItem.sesionId == newItem.sesionId
                 }
 
+                // Aquí comparas si el contenido completo cambió
                 override fun areContentsTheSame(
                     oldItem: MonitoreoSesionUI,
                     newItem: MonitoreoSesionUI
@@ -287,23 +327,29 @@ class pantalla_monitoreos : AppCompatActivity() {
             }
         }
 
+        // ViewHolder representa cada tarjeta/fila individual del RecyclerView
         inner class MonitoreoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
             private val tvTituloSesion: TextView = itemView.findViewById(R.id.tvTituloSesion)
 
+            // Esta función llena la vista con los datos del item actual
             fun bind(item: MonitoreoSesionUI) {
                 tvTituloSesion.text = "Monitoreo ${item.numeroMonitoreo}"
+
                 itemView.setOnClickListener {
                     onItemClick(item)
                 }
             }
         }
 
+        // Aquí se infla el XML de cada item del RecyclerView
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonitoreoViewHolder {
             val view = android.view.LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_monitoreo_sesion, parent, false)
             return MonitoreoViewHolder(view)
         }
 
+        // Aquí se enlazan los datos con el ViewHolder según la posición
         override fun onBindViewHolder(holder: MonitoreoViewHolder, position: Int) {
             holder.bind(getItem(position))
         }

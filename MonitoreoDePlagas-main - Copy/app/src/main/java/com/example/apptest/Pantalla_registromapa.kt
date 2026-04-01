@@ -36,6 +36,8 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class Pantalla_registromapa : AppCompatActivity() {
+
+
     private var csvCargado = false
 
     private val abrirCsvLauncher = registerForActivityResult(

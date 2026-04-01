@@ -25,19 +25,30 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+// Esta pantalla muestra el detalle de un monitoreo.
+// Enseña los datos generales, el mapa con los puntos registrados
+// y una tabla con el detalle de cada registro.
 class PantallaMapaMonitoreo : AppCompatActivity() {
 
+    // WebView donde se carga el mapa hecho con HTML + Leaflet
     private lateinit var webView: WebView
     private lateinit var btnBack: ImageButton
+
     private lateinit var tvTitulo: TextView
     private lateinit var tvAgricultor: TextView
     private lateinit var tvGranja: TextView
     private lateinit var tvLote: TextView
     private lateinit var tvFecha: TextView
     private lateinit var tvCultivo: TextView
+
+    // RecyclerView para mostrar la tabla de registros
     private lateinit var recyclerTabla: RecyclerView
+
     private lateinit var btnDescargarCsv: Button
 
+    // Esta data class representa un registro individual del monitoreo.
+    // Guarda tanto texto como coordenadas numéricas para usarlas en tabla y mapa.
     data class RegistroDetalle(
         val punto: String,
         val latitudTexto: String,
@@ -63,6 +74,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pantalla_mapa_monitoreo)
 
+
         webView = findViewById(R.id.webViewMapa)
         btnBack = findViewById(R.id.btnBackMapa)
         tvTitulo = findViewById(R.id.tvTituloMapa)
@@ -74,6 +86,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         recyclerTabla = findViewById(R.id.recyclerTablaPuntos)
         btnDescargarCsv = findViewById(R.id.btnDescargarCsv)
 
+        // Recupera los datos generales enviados por Intent desde la pantalla anterior
         tvTitulo.text = intent.getStringExtra("titulo") ?: "Mapa del monitoreo"
         tvAgricultor.text = "Agricultor: ${intent.getStringExtra("agricultor") ?: "-"}"
         tvGranja.text = "Granja: ${intent.getStringExtra("granja") ?: "-"}"
@@ -83,8 +96,11 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
 
         btnBack.setOnClickListener { finish() }
 
+        // Recupera la lista de registros enviada como ArrayList<String>
         val rawRegistros = intent.getStringArrayListExtra("registros_detalle") ?: arrayListOf()
 
+        // Convierte cada String recibido en un objeto RegistroDetalle
+        // y además ordena por número de punto, fecha y hora
         val registros = rawRegistros.map { raw ->
             val partes = raw.split("|")
 
@@ -111,14 +127,19 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         btnDescargarCsv.setOnClickListener {
             descargarCsv(registros)
         }
+
+        // Configura la tabla inferior con RecyclerView
         recyclerTabla.layoutManager = LinearLayoutManager(this)
         recyclerTabla.adapter = TablaPuntosAdapter(registros)
         recyclerTabla.isNestedScrollingEnabled = false
 
+        // Configura el WebView para poder usar JavaScript y Leaflet
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.webViewClient = WebViewClient()
 
+        // Agrupa los registros válidos por punto y coordenadas
+        // para construir los marcadores del mapa
         val puntosAgrupados = registros
             .filter { it.latitud != null && it.longitud != null }
             .groupBy { "${it.punto}|${it.latitud}|${it.longitud}" }
@@ -133,6 +154,8 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
             }
             .sortedBy { extraerNumeroPunto(it.punto) }
 
+        // Si no hay coordenadas válidas, muestra una vista sin mapa.
+        // Si sí hay coordenadas, genera el HTML del mapa y lo carga.
         if (puntosAgrupados.isEmpty()) {
             Toast.makeText(
                 this,
@@ -158,9 +181,12 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         }
     }
 
+    // Extrae el número de un texto como "Punto 1", "Punto 2", etc.
     private fun extraerNumeroPunto(punto: String): Int {
         return Regex("\\d+").find(punto)?.value?.toIntOrNull() ?: Int.MAX_VALUE
     }
+
+
     private fun descargarCsv(registros: List<RegistroDetalle>) {
         if (registros.isEmpty()) {
             Toast.makeText(this, "No hay datos para exportar.", Toast.LENGTH_SHORT).show()
@@ -170,13 +196,16 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         val agricultor = intent.getStringExtra("agricultor") ?: "SinAgricultor"
         val lote = intent.getStringExtra("lote") ?: "SinLote"
 
+        // Construye un nombre de archivo con datos del monitoreo y fecha/hora actual
         val nombreArchivo = "Monitoreo_${limpiarTextoArchivo(agricultor)}_${limpiarTextoArchivo(lote)}_${
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         }.csv"
 
+        // Genera el contenido del CSV
         val contenido = construirContenidoCsv(registros)
 
         try {
+            // Forma recomendada en Android moderno usando MediaStore
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val values = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, nombreArchivo)
@@ -214,6 +243,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
                 ).show()
 
             } else {
+
                 val carpeta = java.io.File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                     "Monitoreos"
@@ -243,6 +273,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         }
     }
 
+
     private fun construirContenidoCsv(registros: List<RegistroDetalle>): String {
         val sb = StringBuilder()
 
@@ -263,17 +294,20 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         return sb.toString()
     }
 
+    // Escapa comillas para que el CSV no se rompa si un dato trae texto especial
     private fun escaparCsv(valor: String): String {
         val limpio = valor.replace("\"", "\"\"")
         return "\"$limpio\""
     }
 
+    // Limpia texto para usarlo en nombres de archivo sin caracteres problemáticos
     private fun limpiarTextoArchivo(texto: String): String {
         return texto
             .replace("[^a-zA-Z0-9-_]".toRegex(), "_")
             .replace("_+".toRegex(), "_")
             .trim('_')
     }
+
 
     private fun crearArchivoEnDownloads(nombreArchivo: String): OutputStream? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -296,6 +330,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         }
     }
 
+    // Genera un HTML simple para mostrar cuando no hay coordenadas válidas
     private fun construirHtmlSinMapa(): String {
         return """
             <!DOCTYPE html>
@@ -330,6 +365,8 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         """.trimIndent()
     }
 
+    // Genera el HTML completo del mapa usando Leaflet.
+    // Convierte los puntos a JSON para que JavaScript pueda dibujarlos en el mapa.
     private fun construirHtmlMapa(puntos: List<PuntoMapaAgrupado>): String {
         val jsonArray = JSONArray()
 
@@ -354,8 +391,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
             jsonArray.put(obj)
         }
 
-
-           return """
+        return """
         <!DOCTYPE html>
         <html>
         <head>
@@ -382,6 +418,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
                 attribution: '© OpenStreetMap'
         }).addTo(map);
 
+        // Función para evitar problemas de HTML en los textos del popup
         function escapeHtml(value) {
             return String(value ?? '')
             .replace(/&/g, '&amp;')
@@ -393,6 +430,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
 
         const latlngs = [];
 
+        // Recorre cada punto, crea su marcador y arma el popup con sus detalles
         points.forEach(p => {
             const marker = L.marker([p.lat, p.lon]).addTo(map);
 
@@ -418,6 +456,8 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
             latlngs.push([p.lat, p.lon]);
         });
 
+        // Si solo hay un punto, centra el mapa allí.
+        // Si hay varios, ajusta la vista y dibuja una línea entre ellos.
         if (latlngs.length === 1) {
             map.setView(latlngs[0], 18);
         } else {
@@ -430,10 +470,12 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
         """.trimIndent()
     }
 
+    // Adaptador del RecyclerView para mostrar la tabla de puntos debajo del mapa
     class TablaPuntosAdapter(
         private val items: List<RegistroDetalle>
     ) : RecyclerView.Adapter<TablaPuntosAdapter.TablaViewHolder>() {
 
+        // ViewHolder que representa una fila de la tabla
         inner class TablaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             private val tvIdTabla: TextView = itemView.findViewById(R.id.tvIdTabla)
             private val tvPuntoTabla: TextView = itemView.findViewById(R.id.tvPuntoTabla)
@@ -443,6 +485,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
             private val tvCantidadTabla: TextView = itemView.findViewById(R.id.tvCantidadTabla)
             private val tvHoraTabla: TextView = itemView.findViewById(R.id.tvHoraTabla)
 
+            // Llena la fila con los datos del registro actual
             fun bind(item: RegistroDetalle, position: Int) {
                 tvIdTabla.text = (position + 1).toString()
                 tvPuntoTabla.text = item.punto
@@ -452,6 +495,7 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
                 tvCantidadTabla.text = item.cantidad
                 tvHoraTabla.text = item.hora
 
+                // Alterna el color de fondo para distinguir mejor las filas
                 itemView.setBackgroundColor(
                     if (position % 2 == 0) Color.parseColor("#F9FCF9")
                     else Color.WHITE
@@ -459,16 +503,19 @@ class PantallaMapaMonitoreo : AppCompatActivity() {
             }
         }
 
+        // Crea cada fila de la tabla usando el layout XML correspondiente
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TablaViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_fila_monitoreo, parent, false)
             return TablaViewHolder(view)
         }
 
+        // Asigna los datos a la fila según la posición
         override fun onBindViewHolder(holder: TablaViewHolder, position: Int) {
             holder.bind(items[position], position)
         }
 
+        // Devuelve cuántos elementos hay en la tabla
         override fun getItemCount(): Int = items.size
     }
 }

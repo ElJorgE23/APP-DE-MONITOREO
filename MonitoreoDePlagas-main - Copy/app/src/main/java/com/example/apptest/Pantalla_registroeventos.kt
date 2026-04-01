@@ -267,7 +267,7 @@ class Pantalla_registroeventos : AppCompatActivity() {
     private fun configurarBotonesAgregar() {
         ibAddAgricultor.setOnClickListener {
             agregarOpcion(
-                tipo = "Monitoriador ",
+                tipo = "AGRICULTOR",
                 editText = etAgricultor,
                 lista = itemsAgricultor,
                 adapter = adapterAgricultor,
@@ -280,7 +280,7 @@ class Pantalla_registroeventos : AppCompatActivity() {
 
         ibAddGranja.setOnClickListener {
             agregarOpcion(
-                tipo = "Rancho",
+                tipo = "GRANJA",
                 editText = etGranja,
                 lista = itemsGranja,
                 adapter = adapterGranja,
@@ -293,7 +293,7 @@ class Pantalla_registroeventos : AppCompatActivity() {
 
         ibAddLote.setOnClickListener {
             agregarOpcion(
-                tipo = "Parcela",
+                tipo = "LOTE",
                 editText = etLote,
                 lista = itemsLote,
                 adapter = adapterLote,
@@ -380,8 +380,14 @@ class Pantalla_registroeventos : AppCompatActivity() {
             return
         }
 
+        val userId = sessionManager.obtenerUserId()
+        if (userId <= 0) {
+            showMessage("No se pudo identificar el usuario.")
+            return
+        }
+
         lifecycleScope.launch {
-            val existe = db.opcionDao().existe(tipo, nuevoValor)
+            val existe = db.opcionDao().existe(tipo, nuevoValor, userId)
 
             if (existe) {
                 showMessage(mensajeExiste)
@@ -389,7 +395,8 @@ class Pantalla_registroeventos : AppCompatActivity() {
                 db.opcionDao().insertar(
                     OpcionEntity(
                         tipo = tipo,
-                        nombre = nuevoValor
+                        nombre = nuevoValor,
+                        userId = userId
                     )
                 )
 
@@ -399,7 +406,6 @@ class Pantalla_registroeventos : AppCompatActivity() {
             }
         }
     }
-
     private fun confirmarEliminacion(
         titulo: String,
         mensaje: String,
@@ -414,8 +420,9 @@ class Pantalla_registroeventos : AppCompatActivity() {
         builder.setMessage(mensaje)
 
         builder.setPositiveButton("Si") { _, _ ->
+            val userId = sessionManager.obtenerUserId()
             lifecycleScope.launch {
-                db.opcionDao().eliminar(tipo, nombre)
+                db.opcionDao().eliminar(tipo, nombre, userId)
                 recargarOpciones(tipo, lista, adapter)
                 showMessage(mensajeExito)
             }
@@ -436,12 +443,13 @@ class Pantalla_registroeventos : AppCompatActivity() {
         nombreUsuarioLogueado = "${usuario.nombre} ${usuario.apellido}".trim()
 
         if (nombreUsuarioLogueado.isNotEmpty()) {
-            val existe = db.opcionDao().existe("AGRICULTOR", nombreUsuarioLogueado)
+            val existe = db.opcionDao().existe("AGRICULTOR", nombreUsuarioLogueado, userId)
             if (!existe) {
                 db.opcionDao().insertar(
                     OpcionEntity(
                         tipo = "AGRICULTOR",
-                        nombre = nombreUsuarioLogueado
+                        nombre = nombreUsuarioLogueado,
+                        userId = userId
                     )
                 )
             }
@@ -461,7 +469,10 @@ class Pantalla_registroeventos : AppCompatActivity() {
         spinner: Spinner? = null,
         seleccionarNombre: String? = null
     ) {
-        val opciones = db.opcionDao().obtenerPorTipo(tipo).map { it.nombre }
+        val userId = sessionManager.obtenerUserId()
+        if (userId <= 0) return
+
+        val opciones = db.opcionDao().obtenerPorTipo(tipo, userId).map { it.nombre }
 
         lista.clear()
         lista.addAll(opciones)
@@ -471,7 +482,7 @@ class Pantalla_registroeventos : AppCompatActivity() {
             val posicion = if (!seleccionarNombre.isNullOrEmpty()) {
                 lista.indexOf(seleccionarNombre).takeIf { it >= 0 } ?: 0
             } else {
-                0
+                spinner.selectedItemPosition.takeIf { it in lista.indices } ?: 0
             }
             spinner.setSelection(posicion)
         }

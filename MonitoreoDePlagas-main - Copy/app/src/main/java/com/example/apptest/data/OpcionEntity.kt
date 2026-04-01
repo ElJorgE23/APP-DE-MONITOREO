@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "opciones",
-    indices = [Index(value = ["tipo", "nombre"], unique = true)]
+    indices = [Index(value = ["tipo", "nombre", "userId"], unique = true)]
 )
-// e
 data class OpcionEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val tipo: String,
-    val nombre: String
+    val nombre: String,
+    val userId: Int
 )
